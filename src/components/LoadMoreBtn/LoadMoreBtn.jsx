@@ -1,8 +1,9 @@
 import React from 'react'
+import css from "./LoadMoreBtn.module.css"
 
-const LoadMoreBtn = () => {
+const LoadMoreBtn = ({handleChangePage}) => {
   return (
-   <button>Load more</button>
+   <button className={css.loadMoreButton} onClick={handleChangePage}>Load more</button>
   )
 }
 
