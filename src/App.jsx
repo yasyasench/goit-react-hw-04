@@ -13,31 +13,48 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [loader, setLoader] = useState(false);
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const getImages = async () => {
+      if (!query) return;  
       try {
         setLoader(true);
-        const data = await fetchImages(page);
-        setLoader(false);
-        setImages(prevImages => [...prevImages, ...data.results]);
+        const data = await fetchImages(query, page);  
+        setImages(prevImages => [...prevImages, ...data.results]);  
       } catch (error) {
-        toast.error("Oops, something went wrong, try reloading the page");
+        toast.error('Oops, something went wrong, try reloading the page');
       } finally {
         setLoader(false);
       }
     };
 
     getImages();
-  }, [page]);
+  }, [page, query]);
 
   const handleChangePage = () => {
     setPage(prev => prev + 1);
   };
 
+  const handleSetQuery = (newQuery) => {
+   console.log("Received query:", newQuery);
+
+    if (!newQuery.trim()) {
+      console.log("Empty query, triggering toast...");
+      toast.error("Enter the word");  // Show error if the query is empty
+      return;
+    }
+
+    if (newQuery !== query) {
+      setQuery(newQuery);  // Set the new search query
+      setImages([]);  // Clear the previous images
+      setPage(1);  // Reset the page number to 1
+    }
+  };
+
   return (
     <>
-      <SearchBar />
+      <SearchBar setQuery={handleSetQuery} />
       <Toaster position="top-right" />
       {images.length && <ImageGallery images={images} />}
       {loader && <Loader/>}
