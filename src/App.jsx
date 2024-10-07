@@ -13,7 +13,7 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [totalPages, setTotalPages] = useState(0);
-  const [modalImg, setModalImg] = useState({});
+  const [modalImg, setModalImg] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
@@ -43,11 +43,6 @@ const App = () => {
 
   const handleSetQuery = (newQuery) => {
     console.log("Received query:", newQuery);
-    if (!newQuery.trim()) {
-      console.log("Empty query, triggering toast...");
-      toast.error("Enter the word");
-      return;
-    }
     if (newQuery !== query) {
       setQuery(newQuery);
       setImages([]);
@@ -77,8 +72,10 @@ const App = () => {
       {images.length > 0 && <ImageGallery images={images} handleOpenModel={handleOpenModel} />}
       {loader && <Loader />}
       {visibleBtnMore() && <LoadMoreBtn handleChangePage={handleChangePage} />}
-      {openModal && (
-        <ImageModal openCloseModal={openCloseModal} modalImg={modalImg} />)}
+      <ImageModal
+        isOpen={openModal}
+        openCloseModal={openCloseModal}
+        modalImg={modalImg} />
     </>
   );
 };

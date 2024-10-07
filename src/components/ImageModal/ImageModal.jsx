@@ -3,7 +3,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import css from "./ImageModal.module.css";
 
 
-export default function ImageModal({ openCloseModal, modalImg }) {
+export default function ImageModal({ openCloseModal, modalImg, isOpen }) {
   const customStyles = {
     content: {
       top: "50%",
@@ -21,12 +21,12 @@ export default function ImageModal({ openCloseModal, modalImg }) {
 
   return (
     <Modal
-      isOpen={true}
+      isOpen={isOpen}
       overlayClassName={css.overlay}
       style={customStyles}
       onRequestClose={() => openCloseModal()}
     >
-      <img src={modalImg.urls.regular} alt={modalImg.alt_description} />
+      {modalImg && (<img src={modalImg.urls.regular} alt={modalImg.alt_description} />)}
       <button
         onClick={() => openCloseModal()}
         className={css.closeBtn}

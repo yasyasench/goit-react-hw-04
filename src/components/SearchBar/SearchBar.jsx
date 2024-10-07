@@ -1,6 +1,7 @@
 import React from 'react';
 import css from "./SearchBar.module.css";
 import { Field, Form, Formik } from 'formik';
+import toast from 'react-hot-toast'; // Import toast
 
 const SearchBar = ({ setQuery }) => {
   const initialValues = {
@@ -8,9 +9,13 @@ const SearchBar = ({ setQuery }) => {
   };
 
   const handleSubmit = (values) => {
-    console.log('Form values:', values);  // Ensure this logs your query
+    if (!values.query) {
+      toast.error("Enter the word"); // Trigger toast if query is empty
+      return;
+    }
+    
     if (values.query.trim()) {
-      setQuery(values.query);  // Make sure you call setQuery with the entered value
+      setQuery(values.query); 
     }
   };
 
