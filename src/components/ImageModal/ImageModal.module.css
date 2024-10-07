@@ -1,0 +1,23 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000078;
+    overflow: hidden;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    transition: color 0.4s ease;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+    color: #646cff;
+}

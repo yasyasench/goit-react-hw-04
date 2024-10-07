@@ -5,6 +5,7 @@ import { fetchImages } from './api';
 import Loader from './components/Loader/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
+import ImageModal from './components/ImageModal/ImageModal';
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -12,6 +13,8 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [totalPages, setTotalPages] = useState(0);
+  const [modalImg, setModalImg] = useState({});
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const getImages = async () => {
@@ -53,15 +56,29 @@ const App = () => {
     }
   };
 
+  const openCloseModal = () => {
+    setOpenModal(!openModal);
+    if (openModal) document.body.style.overflow = "auto";
+    else document.body.style.overflow = "hidden";
+  };
+
+  const handleOpenModel = (currentId) => {
+    const [currentImg] = images.filter(({ id }) => id === currentId);
+    setModalImg(currentImg);
+    openCloseModal();
+  };
+
   const visibleBtnMore = () => images.length > 0 && page < totalPages;
 
   return (
     <>
       <SearchBar setQuery={handleSetQuery} />
       <Toaster position="top-right" />
-      {images.length > 0 && <ImageGallery images={images} />}
+      {images.length > 0 && <ImageGallery images={images} handleOpenModel={handleOpenModel} />}
       {loader && <Loader />}
       {visibleBtnMore() && <LoadMoreBtn handleChangePage={handleChangePage} />}
+      {openModal && (
+        <ImageModal openCloseModal={openCloseModal} modalImg={modalImg} />)}
     </>
   );
 };
